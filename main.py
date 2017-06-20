@@ -33,3 +33,12 @@ hole_mask = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (hole_size, hole_size))
 
 dilation = cv2.dilate(erosion, hole_mask)
 save_np_as_image(dilation, '002_holemask=ellipse.jpg')
+
+# 3. original image OR dilation - no more holes in gears
+image3 = cv2.bitwise_or(img, dilation)
+save_np_as_image(image3, '003.jpg')
+
+
+
+
+
