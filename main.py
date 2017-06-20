@@ -22,13 +22,14 @@ def save_np_as_image(image, name):
 
 img = cv2.imread(src_gear)
 
-# 1. errossion with hole ring
+# 1. erosion with hole ring
 hole_size = 97
-kernel = make_ring(hole_size, 4)
-print("kernel:")
-print(kernel)
-print("==========================")
-erosion = cv2.erode(img, kernel, iterations=1)
-plt.imshow(erosion)
-plt.show()
+hole_ring = make_ring(hole_size, 4)
+erosion = cv2.erode(img, hole_ring, iterations=1)
 save_np_as_image(erosion, '001_holesize=97.jpg')
+
+# 2. dilatation with hole mask
+hole_mask = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (hole_size, hole_size))
+
+dilation = cv2.dilate(erosion, hole_mask)
+save_np_as_image(dilation, '002_holemask=ellipse.jpg')
