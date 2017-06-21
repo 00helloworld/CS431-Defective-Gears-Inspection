@@ -39,25 +39,25 @@ image3 = cv2.bitwise_or(img, dilation)
 save_np_as_image(image3, '003.jpg')
 
 # 4. opening with gear_body
-gear_size = 277
+gear_size = 280
 gear_body = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (gear_size, gear_size))
 image4 = cv2.morphologyEx(image3, cv2.MORPH_OPEN, gear_body)
-save_np_as_image(image4, '004_gear_size=277.jpg')
+save_np_as_image(image4, '004_gear_size={}.jpg'.format(gear_size))
 
 
 # все что выше - ок, нужно менять то, что ниже
 # 5. dilate image4 with sampling_ring_spacer
-ring_spacer_size = 13
+ring_spacer_size = 11
 sampling_ring_spacer = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (ring_spacer_size, ring_spacer_size))
 image5 = cv2.dilate(image4, sampling_ring_spacer)
-save_np_as_image(image5, '005_ring_spacer_size=13.jpg')
+save_np_as_image(image5, '005_ring_spacer_size={}.jpg'.format(ring_spacer_size))
 
 # 6.
 
-ring_width_size = 21;
+ring_width_size = 23;
 sampling_ring_width= cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (ring_width_size, ring_width_size))
 image6 = cv2.dilate(image5, sampling_ring_width)
-save_np_as_image(image6, '006_ring_spacer_width=21.jpg')
+save_np_as_image(image6, '006_ring_spacer_width={}.jpg'.format(ring_width_size))
 
 # 7.
 image7 = cv2.bitwise_xor(image5, image6)
@@ -67,6 +67,21 @@ save_np_as_image(image7, '007.jpg')
 image8 = cv2.bitwise_and(img, image7)
 save_np_as_image(image8, '008_original_XOR_007.jpg')
 
+# 9. dilate with tip_spacing
+tip_spacing_size = 23
+tip_spacing = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (tip_spacing_size, tip_spacing_size))
+image9 = cv2.dilate(image8, tip_spacing)
+save_np_as_image(image9, '009_tip_spacing_size={}.jpg'.format(tip_spacing_size))
+
+# 10.
+image10 = cv2.subtract(image7, image9)
+save_np_as_image(image10, '010.jpg')
+defect_cue_size = 35
+defect_cue = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (defect_cue_size, defect_cue_size))
+image10 = cv2.dilate(image10, defect_cue)
+result = cv2.bitwise_or(image10 ,image9)
+save_np_as_image(result, '011_result_body={}_spacer={}_width={}_tip={}_cue={}.jpg'.format(
+                gear_size, ring_spacer_size, ring_width_size, tip_spacing_size, defect_cue_size))
 
 
 
