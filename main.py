@@ -44,8 +44,6 @@ gear_body = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (gear_size, gear_size))
 image4 = cv2.morphologyEx(image3, cv2.MORPH_OPEN, gear_body)
 save_np_as_image(image4, '004_gear_size={}.jpg'.format(gear_size))
 
-
-# все что выше - ок, нужно менять то, что ниже
 # 5. dilate image4 with sampling_ring_spacer
 ring_spacer_size = 11
 sampling_ring_spacer = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (ring_spacer_size, ring_spacer_size))
